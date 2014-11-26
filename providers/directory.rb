@@ -48,7 +48,10 @@ action :purge do
   del_files.merge!(fl.to_dir_size(dir_size)) unless dir_size.nil?
 
   longest_str = del_files.keys.group_by(&:size).max.first unless del_files.size == 0
-
+  if del_files.size == 0 and age.nil? and size.nil? and dir_size.nil?
+    del_files.merge!(fl.larger_than(0))
+  end
+  require 'pry'; binding.pry
   del_files.each do |fname,data|
     time_str = Time.at(data['mtime']).strftime("%Y-%m-%d")
     convert  = Janitor::SizeConversion.new("#{data['size']}b").to_size(:mb)
