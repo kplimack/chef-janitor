@@ -41,8 +41,8 @@ action :purge do
   fl.exclude_all(Regexp.union(exclude_all)) unless exclude_all.nil?
 
   Chef::Log.info("#{fl.to_hash.length} files to process")
-  
-  del_files = {} 
+
+  del_files = {}
   del_files.merge!(fl.older_than(age)) unless age.nil?
   del_files.merge!(fl.larger_than(size)) unless size.nil?
   del_files.merge!(fl.to_dir_size(dir_size)) unless dir_size.nil?
@@ -64,4 +64,3 @@ action :purge do
   end
   new_resource.updated_by_last_action(updated)
 end
-
